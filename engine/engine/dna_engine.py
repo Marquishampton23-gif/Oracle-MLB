@@ -1,34 +1,53 @@
 """
 Oracle DNA Engine
-Version 0.1 Alpha
+Version 1.0
 """
 
+
 class DNAEngine:
+
     def __init__(self):
         self.name = "Oracle DNA Engine"
 
-    def build_hitter_dna(self, hitter):
-        return {
-            "player": hitter,
-            "bat_speed": None,
-            "attack_angle": None,
-            "swing_path": None,
-            "timing": None,
-            "status": "DNA Ready"
-        }
+    def analyze(
+        self,
+        exit_velocity,
+        barrel_rate,
+        hard_hit_rate,
+        launch_angle,
+        bat_speed,
+        sweet_spot,
+        fly_ball_rate,
+    ):
 
-    def build_pitcher_dna(self, pitcher):
+        score = (
+            exit_velocity * 0.20
+            + barrel_rate * 0.25
+            + hard_hit_rate * 0.20
+            + launch_angle * 0.10
+            + bat_speed * 0.10
+            + sweet_spot * 0.05
+            + fly_ball_rate * 0.10
+        )
+
         return {
-            "player": pitcher,
-            "arsenal": None,
-            "velocity": None,
-            "spin": None,
-            "movement": None,
-            "status": "DNA Ready"
+            "DNA Score": round(score, 2),
+            "Status": "Complete"
         }
 
 
 if __name__ == "__main__":
-    engine = DNAEngine()
-    print(engine.build_hitter_dna("Sample Hitter"))
-    print(engine.build_pitcher_dna("Sample Pitcher"))
+
+    dna = DNAEngine()
+
+    print(
+        dna.analyze(
+            95,
+            90,
+            88,
+            82,
+            91,
+            84,
+            87,
+        )
+    )
