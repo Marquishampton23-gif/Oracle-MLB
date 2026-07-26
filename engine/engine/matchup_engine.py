@@ -1,41 +1,63 @@
 """
-Oracle Matchup Engine
-Version 2.0
+Oracle Pitch Attack Engine
 """
-
 
 class MatchupEngine:
 
-    def __init__(self):
-        self.name = "Oracle Matchup Engine"
-
     def analyze(self, player):
 
-        def value(column, default=50):
-            try:
-                return float(player.get(column, default))
-            except:
-                return default
+        def value(*columns, default=0):
+            for column in columns:
+                if column in player:
+                    try:
+                        return float(player[column])
+                    except:
+                        pass
+            return default
 
-        pitch_match = value("pitch_match_score")
-        zone_match = value("zone_match_score")
-        platoon = value("platoon_score")
-        arsenal = value("arsenal_score")
-        movement = value("movement_score")
+        # Hitter production vs pitch types
+        fastball = value(
+            "fastball_run_value",
+            "fastball_xwoba",
+            "fastball_slug"
+        )
 
-        score = (
-            pitch_match * 0.30 +
-            zone_match * 0.25 +
-            platoon * 0.20 +
-            arsenal * 0.15 +
-            movement * 0.10
+        breaking = value(
+            "breaking_run_value",
+            "breaking_xwoba",
+            "breaking_slug"
+        )
+
+        offspeed = value(
+            "offspeed_run_value",
+            "offspeed_xwoba",
+            "offspeed_slug"
+        )
+
+        # Pitch quality
+        movement = value(
+            "horizontal_break",
+            "induced_vertical_break"
+        )
+
+        spin = value(
+            "spin_rate",
+            "active_spin"
+        )
+
+        matchup_score = (
+            fastball * 0.30 +
+            breaking * 0.25 +
+            offspeed * 0.20 +
+            movement * 0.15 +
+            spin * 0.10
         )
 
         return {
-            "Matchup Score": round(score, 2),
-            "Pitch Match": pitch_match,
-            "Zone Match": zone_match,
-            "Platoon": platoon,
-            "Arsenal": arsenal,
-            "Movement": movement
+            "Matchup Score": round(matchup_score, 2),
+            "Fastball": fastball,
+            "Breaking": breaking,
+            "Offspeed": offspeed,
+            "Movement": movement,
+            "Spin": spin
         }
