@@ -61,3 +61,43 @@ class Oracle:
             results.append(self.analyze_player(player_dict))
 
         return results
+        if __name__ == "__main__":
+
+    print("=" * 70)
+    print("ORACLE MLB HOME RUN ENGINE")
+    print("=" * 70)
+
+    try:
+        oracle = Oracle()
+
+        print(f"\nLoaded {len(oracle.merged_data)} players.")
+
+        results = oracle.analyze_all()
+
+        if not results:
+            print("No players were analyzed.")
+            raise SystemExit
+
+        results = sorted(
+            results,
+            key=lambda player: player.get("Oracle Score", 0),
+            reverse=True
+        )
+
+        print("\nTOP 25 HOME RUN BOARD")
+        print("-" * 70)
+
+        for rank, player in enumerate(results[:25], start=1):
+            print(
+                f"{rank:2}. "
+                f"{player.get('Player', 'Unknown'):<25} "
+                f"Score: {player.get('Oracle Score', 0):>6} "
+                f"Tier: {player.get('Tier', '-')}"
+            )
+
+        print("\nDone.")
+
+    except Exception as e:
+        print("\nOracle failed to run.")
+        print(type(e).__name__)
+        print(e)
