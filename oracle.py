@@ -12,6 +12,7 @@ from engine.confidence_engine import ConfidenceEngine
 class Oracle:
 
     def __init__(self):
+        self.statcast = StatcastEngine()
         self.dna = DNAEngine()
         self.matchup = MatchupEngine()
         self.opportunity = OpportunityEngine()
