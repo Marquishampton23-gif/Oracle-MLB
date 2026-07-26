@@ -1,21 +1,27 @@
-import sqlite3
-from pathlib import Path
+from oracle import Oracle
+from scoring_engine import ScoringEngine
 
-DATABASE = Path("database/oracle.db")
 
-def start_oracle():
-    print("=" * 50)
-    print("⚾ ORACLE MLB INTELLIGENCE ENGINE")
-    print("Version: Alpha 0.1")
-    print("=" * 50)
+def main():
 
-    if DATABASE.exists():
-        print("✅ Database found:", DATABASE)
-    else:
-        print("⚠️ Database not found.")
-        print("Run build_database.py to create it.")
+    oracle = Oracle()
 
-    print("\nOracle is ready for development.")
+    print("\nRunning Oracle...\n")
+
+    results = oracle.analyze_all()
+
+    rankings = ScoringEngine().rank_players(results)
+
+    print("===== ORACLE HOME RUN BOARD =====\n")
+
+    for i, player in enumerate(rankings[:25], start=1):
+
+        print(
+            f"{i}. {player['Player']} | "
+            f"{player['Oracle Score']} | "
+            f"{player['Tier']}"
+        )
+
 
 if __name__ == "__main__":
-    start_oracle()
+    main()
