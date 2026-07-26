@@ -35,4 +35,4 @@ jobs:
 
       - name: Run Oracle
         run: |
-          python app.py
+          python app.py 
