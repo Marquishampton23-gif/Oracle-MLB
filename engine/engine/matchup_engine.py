@@ -1,4 +1,4 @@
-""""""
+"""
 Oracle Matchup Engine
 Version 0.1 Alpha
 """
@@ -14,6 +14,7 @@ class MatchupEngine:
             "status": "Analysis Ready"
         }
 
+
 if __name__ == "__main__":
     engine = MatchupEngine()
-    print(engine.analyze("Sample Hitter", "Sample Pitcher"))Pitcher"))
+    print(engine.analyze("Sample Hitter", "Sample Pitcher"))
