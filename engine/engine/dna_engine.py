@@ -1,49 +1,59 @@
-"""
-Oracle DNA Engine
-Version 2.0
-"""
-
-import pandas as pd
-
-
 class DNAEngine:
-
-    def __init__(self):
-        self.name = "Oracle DNA Engine"
 
     def analyze(self, player):
 
-        def value(column, default=50):
-            try:
-                return float(player.get(column, default))
-            except:
-                return default
+        def value(*columns, default=0):
+            for column in columns:
+                if column in player:
+                    try:
+                        return float(player[column])
+                    except:
+                        pass
+            return default
 
-        exit_velocity = value("exit_velocity")
-        barrel_rate = value("barrel_rate")
-        hard_hit_rate = value("hard_hit_rate")
-        launch_angle = value("launch_angle")
-        bat_speed = value("bat_speed")
-        sweet_spot = value("sweet_spot")
-        fly_ball_rate = value("fly_ball_rate")
+        exit_velocity = value(
+            "avg_hit_speed",
+            "avg_hit_speed_mph",
+            "exit_velocity_avg"
+        )
 
-        score = (
-            exit_velocity * 0.20 +
-            barrel_rate * 0.25 +
-            hard_hit_rate * 0.20 +
-            launch_angle * 0.10 +
-            bat_speed * 0.10 +
-            sweet_spot * 0.05 +
-            fly_ball_rate * 0.10
+        barrel_rate = value(
+            "brl_percent",
+            "barrel_batted_rate"
+        )
+
+        hard_hit = value(
+            "hard_hit_percent",
+            "hardhit_percent"
+        )
+
+        launch_angle = value(
+            "launch_angle_avg"
+        )
+
+        bat_speed = value(
+            "avg_bat_speed"
+        )
+
+        sweet_spot = value(
+            "sweet_spot_percent"
+        )
+
+        dna_score = (
+            exit_velocity * .25 +
+            barrel_rate * .20 +
+            hard_hit * .20 +
+            launch_angle * .15 +
+            bat_speed * .10 +
+            sweet_spot * .10
         )
 
         return {
-            "DNA Score": round(score, 2),
+            "DNA Score": round(dna_score,2),
             "Exit Velocity": exit_velocity,
-            "Barrel Rate": barrel_rate,
-            "Hard Hit": hard_hit_rate,
+            "Barrel %": barrel_rate,
+            "Hard Hit %": hard_hit,
             "Launch Angle": launch_angle,
             "Bat Speed": bat_speed,
-            "Sweet Spot": sweet_spot,
-            "Fly Ball": fly_ball_rate
+            "Sweet Spot %": sweet_spot
         }
