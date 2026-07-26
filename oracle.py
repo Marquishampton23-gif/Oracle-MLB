@@ -7,6 +7,7 @@ from engine.dna_engine import DNAEngine
 from engine.matchup_engine import MatchupEngine
 from engine.opportunity_engine import OpportunityEngine
 from engine.confidence_engine import ConfidenceEngine
+from engine.statcast_engine import StatcastEngine
 
 
 class Oracle:
