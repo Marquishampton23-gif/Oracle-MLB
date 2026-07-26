@@ -29,3 +29,8 @@ class DNAEngine:
             score += 10
 
         return min(score, 100)
+
+    def analyze(self, player):
+        """Analyze player and return DNA score in expected format."""
+        dna_score = self.score(player)
+        return {"DNA Score": dna_score}
