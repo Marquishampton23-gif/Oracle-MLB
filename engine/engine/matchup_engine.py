@@ -1,63 +1,28 @@
-"""
-Oracle Pitch Attack Engine
-"""
-
 class MatchupEngine:
 
-    def analyze(self, player):
+    def score(self, player):
 
-        def value(*columns, default=0):
-            for column in columns:
-                if column in player:
-                    try:
-                        return float(player[column])
-                    except:
-                        pass
-            return default
+        score = 0
 
-        # Hitter production vs pitch types
-        fastball = value(
-            "fastball_run_value",
-            "fastball_xwoba",
-            "fastball_slug"
-        )
+        if player.get("Fastball_Run_Value", 0) > 0:
+            score += 20
 
-        breaking = value(
-            "breaking_run_value",
-            "breaking_xwoba",
-            "breaking_slug"
-        )
+        if player.get("Slider_Run_Value", 0) > 0:
+            score += 15
 
-        offspeed = value(
-            "offspeed_run_value",
-            "offspeed_xwoba",
-            "offspeed_slug"
-        )
+        if player.get("Curveball_Run_Value", 0) > 0:
+            score += 10
 
-        # Pitch quality
-        movement = value(
-            "horizontal_break",
-            "induced_vertical_break"
-        )
+        if player.get("Changeup_Run_Value", 0) > 0:
+            score += 15
 
-        spin = value(
-            "spin_rate",
-            "active_spin"
-        )
+        if player.get("Sinker_Run_Value", 0) > 0:
+            score += 10
 
-        matchup_score = (
-            fastball * 0.30 +
-            breaking * 0.25 +
-            offspeed * 0.20 +
-            movement * 0.15 +
-            spin * 0.10
-        )
+        if player.get("Cutter_Run_Value", 0) > 0:
+            score += 10
 
-        return {
-            "Matchup Score": round(matchup_score, 2),
-            "Fastball": fastball,
-            "Breaking": breaking,
-            "Offspeed": offspeed,
-            "Movement": movement,
-            "Spin": spin
-        }
+        if player.get("Splitter_Run_Value", 0) > 0:
+            score += 10
+
+        return min(score, 100)
