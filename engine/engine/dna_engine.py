@@ -1,59 +1,31 @@
+import pandas as pd
+
+
 class DNAEngine:
 
-    def analyze(self, player):
+    def score(self, player):
 
-        def value(*columns, default=0):
-            for column in columns:
-                if column in player:
-                    try:
-                        return float(player[column])
-                    except:
-                        pass
-            return default
+        score = 0
 
-        exit_velocity = value(
-            "avg_hit_speed",
-            "avg_hit_speed_mph",
-            "exit_velocity_avg"
-        )
+        if player.get("avg_hit_speed", 0) >= 95:
+            score += 20
 
-        barrel_rate = value(
-            "brl_percent",
-            "barrel_batted_rate"
-        )
+        if player.get("max_hit_speed", 0) >= 110:
+            score += 15
 
-        hard_hit = value(
-            "hard_hit_percent",
-            "hardhit_percent"
-        )
+        if player.get("brl_percent", 0) >= 12:
+            score += 20
 
-        launch_angle = value(
-            "launch_angle_avg"
-        )
+        if player.get("hard_hit_percent", 0) >= 45:
+            score += 15
 
-        bat_speed = value(
-            "avg_bat_speed"
-        )
+        if player.get("launch_angle", 15) >= 12:
+            score += 10
 
-        sweet_spot = value(
-            "sweet_spot_percent"
-        )
+        if player.get("launch_angle", 15) <= 28:
+            score += 10
 
-        dna_score = (
-            exit_velocity * .25 +
-            barrel_rate * .20 +
-            hard_hit * .20 +
-            launch_angle * .15 +
-            bat_speed * .10 +
-            sweet_spot * .10
-        )
+        if player.get("sweet_spot_percent", 0) >= 35:
+            score += 10
 
-        return {
-            "DNA Score": round(dna_score,2),
-            "Exit Velocity": exit_velocity,
-            "Barrel %": barrel_rate,
-            "Hard Hit %": hard_hit,
-            "Launch Angle": launch_angle,
-            "Bat Speed": bat_speed,
-            "Sweet Spot %": sweet_spot
-        }
+        return min(score, 100)
