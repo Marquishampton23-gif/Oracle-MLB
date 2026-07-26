@@ -1,30 +1,55 @@
 """
 Oracle Confidence Engine
-Version 0.1 Alpha
+Version 1.0
 """
 
+
 class ConfidenceEngine:
+
     def __init__(self):
         self.name = "Oracle Confidence Engine"
 
-    def score(self, dna_result, matchup_result, opportunity_result):
+    def analyze(
+        self,
+        dna_score,
+        matchup_score,
+        opportunity_score,
+    ):
+
+        confidence = (
+            dna_score * 0.40
+            + matchup_score * 0.35
+            + opportunity_score * 0.25
+        )
+
         return {
-            "dna": dna_result,
-            "matchup": matchup_result,
-            "opportunity": opportunity_result,
-            "oracle_score": 0,
-            "confidence": "Pending",
-            "status": "Confidence Ready"
+            "Confidence Score": round(confidence, 2),
+            "Tier": self.get_tier(confidence),
+            "Status": "Complete",
         }
+
+    def get_tier(self, score):
+
+        if score >= 90:
+            return "Tier S"
+
+        if score >= 85:
+            return "Tier A"
+
+        if score >= 80:
+            return "Tier B"
+
+        return "Sleeper"
 
 
 if __name__ == "__main__":
+
     engine = ConfidenceEngine()
 
     print(
-        engine.score(
-            "DNA Ready",
-            "Matchup Ready",
-            "Opportunity Ready"
+        engine.analyze(
+            92,
+            89,
+            87,
         )
     )
