@@ -1,6 +1,6 @@
 class MatchupEngine:
 
-    def score(self, player):
+    def analyze(self, player):
 
         score = 0
 
@@ -25,4 +25,4 @@ class MatchupEngine:
         if player.get("Splitter_Run_Value", 0) > 0:
             score += 10
 
-        return min(score, 100)
+        return {"Matchup Score": min(score, 100)}
