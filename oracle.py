@@ -21,6 +21,7 @@ class Oracle:
 
         # Build Master Player Database
         self.database = PlayerDatabase(datasets)
+        self.merged_data = self.database.build()
 
         # Load Engines
         self.dna = DNAEngine()
@@ -36,25 +37,27 @@ class Oracle:
         heat = self.heat.analyze(player)
 
         oracle_score = (
-            dna["score"] +
-            matchup["score"] +
-            opportunity["score"] +
-            heat["score"]
+            dna["DNA Score"] +
+            matchup["Matchup Score"] +
+            opportunity["Opportunity Score"] +
+            heat["Heat Score"]
         ) / 4
 
         return {
-            "Player": player,
+            "Player": player.get("player_name") or player.get("player_id", "Unknown"),
             "Oracle Score": round(oracle_score, 2),
             "Tier": "A"
         }
 
     def analyze_all(self):
 
-        players = self.database.players
+        if self.merged_data is None or len(self.merged_data) == 0:
+            return []
 
         results = []
 
-        for player in players:
-            results.append(self.analyze_player(player))
+        for idx, row in self.merged_data.iterrows():
+            player_dict = row.to_dict()
+            results.append(self.analyze_player(player_dict))
 
         return results
