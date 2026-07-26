@@ -1,6 +1,6 @@
 """
 Oracle Opportunity Engine
-Version 1.0
+Version 2.0
 """
 
 
@@ -9,39 +9,33 @@ class OpportunityEngine:
     def __init__(self):
         self.name = "Oracle Opportunity Engine"
 
-    def analyze(
-        self,
-        lineup_spot,
-        park_factor,
-        weather_score,
-        bullpen_score,
-        game_script,
-    ):
+    def analyze(self, player):
 
-        opportunity_score = (
-            lineup_spot * 0.25
-            + park_factor * 0.25
-            + weather_score * 0.20
-            + bullpen_score * 0.15
-            + game_script * 0.15
+        def value(column, default=50):
+            try:
+                return float(player.get(column, default))
+            except:
+                return default
+
+        lineup_spot = value("lineup_spot")
+        park_factor = value("park_factor")
+        weather = value("weather_score")
+        bullpen = value("bullpen_score")
+        positioning = value("positioning_score")
+
+        score = (
+            lineup_spot * 0.30 +
+            park_factor * 0.25 +
+            weather * 0.15 +
+            bullpen * 0.15 +
+            positioning * 0.15
         )
 
         return {
-            "Opportunity Score": round(opportunity_score, 2),
-            "Status": "Complete",
+            "Opportunity Score": round(score, 2),
+            "Lineup": lineup_spot,
+            "Park": park_factor,
+            "Weather": weather,
+            "Bullpen": bullpen,
+            "Positioning": positioning
         }
-
-
-if __name__ == "__main__":
-
-    engine = OpportunityEngine()
-
-    print(
-        engine.analyze(
-            95,
-            90,
-            88,
-            84,
-            92,
-        )
-    )
