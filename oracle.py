@@ -9,7 +9,6 @@ from engine.engine.dna_engine import DNAEngine
 from engine.engine.matchup_engine import MatchupEngine
 from engine.engine.opportunity_engine import OpportunityEngine
 from engine.engine.heat_check_engine import HeatCheckEngine
-from engine.engine.sleeper_engine import SleeperEngine
 
 
 class Oracle:
@@ -28,7 +27,6 @@ class Oracle:
         self.matchup = MatchupEngine()
         self.opportunity = OpportunityEngine()
         self.heat = HeatCheckEngine()
-        self.sleeper = SleeperEngine()
 
     def analyze_player(self, player):
 
@@ -36,15 +34,13 @@ class Oracle:
         matchup = self.matchup.analyze(player)
         opportunity = self.opportunity.analyze(player)
         heat = self.heat.analyze(player)
-        sleeper = self.sleeper.analyze(player)
 
         oracle_score = (
             dna["score"] +
             matchup["score"] +
             opportunity["score"] +
-            heat["score"] +
-            sleeper["score"]
-        ) / 5
+            heat["score"]
+        ) / 4
 
         return {
             "Player": player,
