@@ -1,6 +1,6 @@
 """
 Oracle Matchup Engine
-Version 1.0
+Version 2.0
 """
 
 
@@ -9,45 +9,33 @@ class MatchupEngine:
     def __init__(self):
         self.name = "Oracle Matchup Engine"
 
-    def analyze(
-        self,
-        hitter,
-        pitcher,
-        pitch_match_score,
-        zone_match_score,
-        platoon_score,
-        arsenal_score,
-        movement_score,
-    ):
+    def analyze(self, player):
 
-        matchup_score = (
-            pitch_match_score * 0.30
-            + zone_match_score * 0.25
-            + platoon_score * 0.20
-            + arsenal_score * 0.15
-            + movement_score * 0.10
+        def value(column, default=50):
+            try:
+                return float(player.get(column, default))
+            except:
+                return default
+
+        pitch_match = value("pitch_match_score")
+        zone_match = value("zone_match_score")
+        platoon = value("platoon_score")
+        arsenal = value("arsenal_score")
+        movement = value("movement_score")
+
+        score = (
+            pitch_match * 0.30 +
+            zone_match * 0.25 +
+            platoon * 0.20 +
+            arsenal * 0.15 +
+            movement * 0.10
         )
 
         return {
-            "Hitter": hitter,
-            "Pitcher": pitcher,
-            "Matchup Score": round(matchup_score, 2),
-            "Status": "Complete",
+            "Matchup Score": round(score, 2),
+            "Pitch Match": pitch_match,
+            "Zone Match": zone_match,
+            "Platoon": platoon,
+            "Arsenal": arsenal,
+            "Movement": movement
         }
-
-
-if __name__ == "__main__":
-
-    engine = MatchupEngine()
-
-    print(
-        engine.analyze(
-            "Aaron Judge",
-            "Tarik Skubal",
-            94,
-            91,
-            88,
-            90,
-            86,
-        )
-    )
