@@ -21,7 +21,7 @@ class Oracle:
         datasets = loader.load_all()
 
         # Build Master Player Database
-        self.database = PlayerDatabase(datasets).build()
+        self.database = PlayerDatabase(datasets)
 
         # Load Engines
         self.dna = DNAEngine()
@@ -39,33 +39,26 @@ class Oracle:
         sleeper = self.sleeper.analyze(player)
 
         oracle_score = (
-            dna["DNA Score"] * 0.30 +
-            matchup["Matchup Score"] * 0.25 +
-            opportunity["Opportunity Score"] * 0.15 +
-            heat["Heat Score"] * 0.15 +
-            sleeper["Sleeper Score"] * 0.15
-        )
+            dna["score"] +
+            matchup["score"] +
+            opportunity["score"] +
+            heat["score"] +
+            sleeper["score"]
+        ) / 5
 
         return {
-            "Player": player.get("player_name", "Unknown"),
+            "Player": player,
             "Oracle Score": round(oracle_score, 2),
-            "DNA": dna,
-            "Matchup": matchup,
-            "Opportunity": opportunity,
-            "Heat": heat,
-            "Sleeper": sleeper,
+            "Tier": "A"
         }
 
     def analyze_all(self):
 
+        players = self.database.players
+
         results = []
 
-        for _, player in self.database.iterrows():
-            results.append(self.analyze_player(player.to_dict()))
-
-        results.sort(
-            key=lambda x: x["Oracle Score"],
-            reverse=True
-        )
+        for player in players:
+            results.append(self.analyze_player(player))
 
         return results
