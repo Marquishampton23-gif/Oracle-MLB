@@ -5,11 +5,11 @@ Oracle Engine
 from database.master_loader import MasterLoader
 from database.player_database import PlayerDatabase
 
-from engine.dna_engine import DNAEngine
-from engine.matchup_engine import MatchupEngine
-from engine.opportunity_engine import OpportunityEngine
-from engine.heat_check_engine import HeatCheckEngine
-from engine.sleeper_engine import SleeperEngine
+from engine.engine.dna_engine import DNAEngine
+from engine.engine.matchup_engine import MatchupEngine
+from engine.engine.opportunity_engine import OpportunityEngine
+from engine.engine.heat_check_engine import HeatCheckEngine
+from engine.engine.sleeper_engine import SleeperEngine
 
 
 class Oracle:
