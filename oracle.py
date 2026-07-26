@@ -1,6 +1,6 @@
 """
 Oracle Engine
-Version 0.1 Alpha
+Version 0.2
 """
 
 from database.master_loader import MasterLoader
@@ -8,8 +8,8 @@ from database.master_loader import MasterLoader
 from engine.dna_engine import DNAEngine
 from engine.matchup_engine import MatchupEngine
 from engine.opportunity_engine import OpportunityEngine
-from engine.confidence_engine import ConfidenceEngine
-from engine.statcast_engine import StatcastEngine
+from engine.heat_check_engine import HeatCheckEngine
+from engine.sleeper_engine import SleeperEngine
 
 
 class Oracle:
@@ -21,19 +21,36 @@ class Oracle:
         self.database = self.loader.load_all()
 
         # Load Oracle Engines
-        self.statcast = StatcastEngine()
         self.dna = DNAEngine()
         self.matchup = MatchupEngine()
         self.opportunity = OpportunityEngine()
-        self.confidence = ConfidenceEngine()
+        self.heat = HeatCheckEngine()
+        self.sleeper = SleeperEngine()
 
-    def analyze(self, hitter, pitcher):
+    def analyze(self, player):
+
+        dna = self.dna.analyze(player)
+        matchup = self.matchup.analyze(player)
+        opportunity = self.opportunity.analyze(player)
+        heat = self.heat.analyze(player)
+        sleeper = self.sleeper.analyze(player)
+
+        oracle_score = (
+            dna["DNA Score"] * 0.30 +
+            matchup["Matchup Score"] * 0.25 +
+            opportunity["Opportunity Score"] * 0.15 +
+            heat["Heat Score"] * 0.15 +
+            sleeper["Sleeper Score"] * 0.15
+        )
 
         return {
-            "hitter": hitter,
-            "pitcher": pitcher,
-            "database_loaded": self.database is not None,
-            "status": "Oracle Connected"
+            "Player": player.get("player_name", "Unknown"),
+            "Oracle Score": round(oracle_score, 2),
+            "DNA": dna,
+            "Matchup": matchup,
+            "Opportunity": opportunity,
+            "Heat": heat,
+            "Sleeper": sleeper
         }
 
 
@@ -41,9 +58,6 @@ if __name__ == "__main__":
 
     oracle = Oracle()
 
-    print(
-        oracle.analyze(
-            "Aaron Judge",
-            "Tarik Skubal"
-        )
-    )
+    if len(oracle.database) > 0:
+        result = oracle.analyze(oracle.database.iloc[0].to_dict())
+        print(result)
