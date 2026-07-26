@@ -1,9 +1,9 @@
 """
 Oracle Engine
-Version 0.2
 """
 
 from database.master_loader import MasterLoader
+from database.player_database import PlayerDatabase
 
 from engine.dna_engine import DNAEngine
 from engine.matchup_engine import MatchupEngine
@@ -16,18 +16,21 @@ class Oracle:
 
     def __init__(self):
 
-        # Load Master Database
-        self.loader = MasterLoader()
-        self.database = self.loader.load_all()
+        # Load all datasets
+        loader = MasterLoader()
+        datasets = loader.load_all()
 
-        # Load Oracle Engines
+        # Build Master Player Database
+        self.database = PlayerDatabase(datasets).build()
+
+        # Load Engines
         self.dna = DNAEngine()
         self.matchup = MatchupEngine()
         self.opportunity = OpportunityEngine()
         self.heat = HeatCheckEngine()
         self.sleeper = SleeperEngine()
 
-    def analyze(self, player):
+    def analyze_player(self, player):
 
         dna = self.dna.analyze(player)
         matchup = self.matchup.analyze(player)
@@ -50,14 +53,19 @@ class Oracle:
             "Matchup": matchup,
             "Opportunity": opportunity,
             "Heat": heat,
-            "Sleeper": sleeper
+            "Sleeper": sleeper,
         }
 
+    def analyze_all(self):
 
-if __name__ == "__main__":
+        results = []
 
-    oracle = Oracle()
+        for _, player in self.database.iterrows():
+            results.append(self.analyze_player(player.to_dict()))
 
-    if len(oracle.database) > 0:
-        result = oracle.analyze(oracle.database.iloc[0].to_dict())
-        print(result)
+        results.sort(
+            key=lambda x: x["Oracle Score"],
+            reverse=True
+        )
+
+        return results
