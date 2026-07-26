@@ -8,9 +8,10 @@ from engine.matchup_engine import MatchupEngine
 from engine.opportunity_engine import OpportunityEngine
 from engine.confidence_engine import ConfidenceEngine
 from engine.statcast_engine import StatcastEngine
-
 from database.master_loader import MasterLoader
+
 class Oracle:
+    
     self.loader = MasterLoader()
 self.database = self.loader.load_all()
 
