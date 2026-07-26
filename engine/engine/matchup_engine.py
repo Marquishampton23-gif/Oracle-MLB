@@ -16,5 +16,4 @@ class MatchupEngine:
 
 if __name__ == "__main__":
     engine = MatchupEngine()
-    print(engine.analyze("Sample Hitter", "Sample Pitcher"))
- Pitcher"))
+    print(engine.analyze("Sample Hitter", "Sample Pitcher"))Pitcher"))
