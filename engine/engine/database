@@ -1,0 +1,32 @@
+"""
+Oracle Database
+Version 0.1 Alpha
+"""
+
+class OracleDatabase:
+    def __init__(self):
+        self.hitters = []
+        self.pitchers = []
+        self.games = []
+
+    def load_hitters(self, hitters):
+        self.hitters = hitters
+
+    def load_pitchers(self, pitchers):
+        self.pitchers = pitchers
+
+    def load_games(self, games):
+        self.games = games
+
+    def status(self):
+        return {
+            "hitters": len(self.hitters),
+            "pitchers": len(self.pitchers),
+            "games": len(self.games),
+            "status": "Database Ready"
+        }
+
+
+if __name__ == "__main__":
+    db = OracleDatabase()
+    print(db.status())
