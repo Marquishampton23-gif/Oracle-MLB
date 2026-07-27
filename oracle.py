@@ -22,6 +22,10 @@ class Oracle:
         # Build Master Player Database
         self.database = PlayerDatabase(datasets)
         self.merged_data = self.database.build()
+        
+        print(self.merged_data.columns.tolist())
+print(self.merged_data[["player_id", "player_name"]].head(10))
+raise SystemExit
 
         # Load Engines
         self.dna = DNAEngine()
