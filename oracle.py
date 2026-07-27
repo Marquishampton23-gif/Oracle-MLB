@@ -61,8 +61,9 @@ class Oracle:
             results.append(self.analyze_player(player_dict))
 
         return results
-        if __name__ == "__main__":
 
+
+if __name__ == "__main__":
     print("=" * 70)
     print("ORACLE MLB HOME RUN ENGINE")
     print("=" * 70)
@@ -92,7 +93,7 @@ class Oracle:
                 f"{rank:2}. "
                 f"{player.get('Player', 'Unknown'):<25} "
                 f"Score: {player.get('Oracle Score', 0):>6} "
-                f"Tier: {player.get('Tier', '-')}"
+                f"Tier: {player.get('Tier', '-') }"
             )
 
         print("\nDone.")
