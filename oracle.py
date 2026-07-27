@@ -87,10 +87,7 @@ if __name__ == "__main__":
 
         print("\nTOP 25 HOME RUN BOARD")
         print("-" * 70)
-
-        print("\nTOP 25 HOME RUN BOARD")
-print("-" * 70)
-
+        
 for rank, player in enumerate(results[:25], start=1):
 
     name = (
