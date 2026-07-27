@@ -88,17 +88,41 @@ if __name__ == "__main__":
         print("\nTOP 25 HOME RUN BOARD")
         print("-" * 70)
 
-        for rank, player in enumerate(results[:25], start=1):
-            print(
-                f"{rank:2}. "
-                f"{player.get('Player', 'Unknown'):<25} "
-                f"Score: {player.get('Oracle Score', 0):>6} "
-                f"Tier: {player.get('Tier', '-') }"
-            )
+        print("\nTOP 25 HOME RUN BOARD")
+print("-" * 70)
 
-        print("\nDone.")
+for rank, player in enumerate(results[:25], start=1):
 
-    except Exception as e:
-        print("\nOracle failed to run.")
-        print(type(e).__name__)
-        print(e)
+    name = (
+        player.get("player_name")
+        or player.get("Player Name")
+        or player.get("full_name")
+        or player.get("Name")
+        or player.get("name")
+        or player.get("Player")
+        or "Unknown"
+    )
+
+    team = (
+        player.get("team")
+        or player.get("Team")
+        or ""
+    )
+
+    score = player.get("Oracle Score", 0)
+    tier = player.get("Tier", "-")
+
+    if team:
+        print(
+            f"{rank:2}. {name} ({team})    "
+            f"Score: {score}    "
+            f"Tier: {tier}"
+        )
+    else:
+        print(
+            f"{rank:2}. {name}    "
+            f"Score: {score}    "
+            f"Tier: {tier}"
+        )
+
+print("\nDone.")
